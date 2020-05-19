@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+     <header id="main-header" class="bg-success text-white p-4 mb-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+                <h1 id="header-title">Item Lister</h1>
+            </div>
+            <div class="col-md-6 align-self-center">
+                <input type="text" class="form-control" id="filter" placeholder="Search Items...">
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="container">
+       <div id="main" class="card card-body">
+        <h2 class="title">Add Items</h2>
+        <form id="addForm" class="form-inline mb-3">
+          <input type="text" class="form-control mr-2" id="item">
+          <input type="submit" class="btn btn-dark" value="Submit">
+        </form>
+        <h2 class="title">Items</h2>
+        <ul id="items" class="list-group">
+          <li class="list-group-item"><p>Item 1</p> <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+          <li class="list-group-item"><p>Item 2</p> <button class="btn btn-danger btn-sm float-right delete">X</button></li>
+        </ul>
+       </div>
+      </div>
+      <style>
+          .list-group-item p {
+              display: inline;
+          }
+      </style>
+<script>
+    class ElementListe {
+        constructor(value){
+            this.value = value;
+        }
+    }
+
+    class Funkcionalnost{
+
+
+        static dodajItem(parametar){
+            const celaLista = document.getElementById("items");
+            const novaLista = document.createElement("li");
+            const noviItem = document.createElement("p");
+            const dugme = document.createElement("button");
+            dugme.innerHTML = "X";
+            dugme.classList = "btn btn-danger btn-sm float-right delete";
+            celaLista.appendChild(novaLista);
+            novaLista.appendChild(noviItem);
+            novaLista.className = "list-group-item";
+            novaLista.appendChild(dugme);
+            noviItem.innerHTML = parametar.value;
+        }
+
+
+
+        static skiniItem(parametar){
+            parametar.parentElement.style.display = "none";
+        }
+
+        static ocitsiPolje(){
+            document.getElementById("item").value = "";
+        }
+        static filtiraj(){
+
+        }
+    }
+
+
+document.getElementById("addForm").addEventListener("submit",dodaj);
+function dodaj(e){
+    e.preventDefault();
+    
+    const tekst = document.getElementById("item").value; 
+    if(tekst === ""){alert("Molimo vas unesite vrednost")}
+    else{
+    const lista = new ElementListe(tekst);
+    Funkcionalnost.dodajItem(lista);
+    Funkcionalnost.ocitsiPolje(lista);
+  }
+}
+
+
+const listItem = document.getElementById("items");
+listItem.addEventListener("click",skini);
+function skini(e){
+    var klik = e.target;
+    if(klik.innerHTML === "X"){
+        Funkcionalnost.skiniItem(klik);
+    }
+};
+
+var filter = document.getElementById("filter");
+filter.addEventListener("input",filtrirajListu);
+const listItems = document.getElementsByClassName("list-group-item");
+function filtrirajListu(){
+    for(var i = 0;i<listItems.length;i++){
+        const pText = listItems[i].getElementsByTagName("p")[0];
+        if(pText.innerHTML.toUpperCase().indexOf(filter.value.toUpperCase())>-1){
+            listItems[i].style.display="";
+        }else{listItems[i].style.display="none";}
+    }
+    
+}
+
+
+
+</script>
+</body>
+</html>
